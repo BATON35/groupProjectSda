@@ -10,7 +10,7 @@ public class Login {
         Scanner sc = new Scanner(System.in);
         String validPassword = sc.nextLine();
         if (validPassword.equals(user.getPassword())) {
-            System.out.println("poprawne hasło");
+            System.out.println("poprawne hasło, zalogowany");
             return true;
         }
         System.out.println("bledne hasło");
