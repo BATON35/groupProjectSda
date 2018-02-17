@@ -4,6 +4,6 @@ public class Interface {
         User os1 = new User("lukas","abcd");
         Login.isVaildLogin(os1);
         AddUsers.addUser(os1);
-        
+
     }
 }
