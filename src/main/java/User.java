@@ -1,10 +1,14 @@
 public class User {
+    private static int userCounter;
     private String userName;
     private String password;
+    private boolean online;
 
-    public User(String userName, String pasword) {
+    protected User(String userName, String password) {
+        userCounter++;
         this.userName = userName;
-        this.password = pasword;
+        this.password = password;
+        online = false;
     }
 
     public String getUserName() {
@@ -14,4 +18,13 @@ public class User {
     public String getPassword() {
         return password;
     }
+
+    public void setOnline(boolean online) {
+        this.online = online;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
 }
