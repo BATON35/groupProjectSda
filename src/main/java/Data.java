@@ -16,5 +16,4 @@ public class Data {
 
     @SerializedName("rates")
     List<ExchangeRate> rates;
-
 }

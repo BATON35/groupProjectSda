@@ -4,11 +4,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import sun.util.calendar.LocalGregorianCalendar;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -18,15 +16,21 @@ public class Main {
     static int iloscNotowan;
     static int nrWaluty;
     private static int range;
-    static Date fromDate = new Date(2018-01-02);
-    static Date toDate = new Date(2018-01-31);
+    static SimpleDateFormat fromDate = new SimpleDateFormat("yyyy-mm-dd");
+    static String fromDateString;
+    static String toDateString;
+    static SimpleDateFormat toDate = new SimpleDateFormat("yyyy-mm-dd");
 
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws ParseException {
+        User os1 = new User("lukas","abcd");
+        Login.isVaildLogin(os1);
+        AddUsers.addUser(os1);
+        getFromDate();
+        getToDate();
+        stringToSimpeDateFormat();
         getCurrency();
-
-        getRange();
+      //  getRange();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -36,10 +40,26 @@ public class Main {
         NbpApi nbpApi = retrofit.create(NbpApi.class);
 
         Call<Data> exchangeRateCall = nbpApi.getLastData(waluta, iloscNotowan);
-        System.out.println("URL: " + exchangeRateCall.request().url());
-        Call<Data> exchangeRateByDateCall = nbpApi.getRangeDate(waluta,fromDate,toDate);
+     //   System.out.println("URL: " + exchangeRateCall.request().url());
+        Call<Data> exchangeRateByDateCall = nbpApi.getRangeDate(waluta, fromDateString, toDateString);
+        System.out.println("URL: " + exchangeRateByDateCall.request().url());
 
+        exchangeRateByDateCall.enqueue(new Callback<Data>() {
+            public void onResponse(Call<Data> call, Response<Data> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Data data = response.body();
 
+                    System.out.println("wybrana waluta: " + data.code);
+                    for (ExchangeRate er : data.rates) {
+                        System.out.println(er.toString());
+                    }
+                }
+            }
+
+            public void onFailure(Call<Data> call, Throwable throwable) {
+                throwable.printStackTrace();
+            }
+        });
         exchangeRateCall.enqueue(new Callback<Data>() {
             public void onResponse(Call<Data> call, Response<Data> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -57,6 +77,28 @@ public class Main {
             }
         });
 
+    }
+
+    private static String getToDate() {
+        System.out.println("podaj datę końcową w formacie (yyyy-mm-dd)");
+        Scanner sc = new Scanner(System.in);
+        toDateString = sc.nextLine();
+        System.out.println(toDateString);
+        return toDateString;
+    }
+
+    private static String getFromDate() {
+        System.out.println("podaj datę początkową w formacie (yyyy-mm-dd)");
+        Scanner sc = new Scanner(System.in);
+        fromDateString = sc.nextLine();
+        System.out.println(fromDateString);
+        return fromDateString;
+    }
+
+    private static SimpleDateFormat stringToSimpeDateFormat() throws ParseException {
+        fromDate.parse(fromDateString);
+        toDate.parse(toDateString);
+        return fromDate;
     }
 
     private static String getCurrency() {
@@ -94,9 +136,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
 
-
-            iloscNotowan = sc.nextInt();
-
+        iloscNotowan = sc.nextInt();
 
 
         System.out.println(iloscNotowan);
