@@ -14,10 +14,9 @@ public class ExchangeRate {
 
     @Override
     public String toString() {
-        return "ExchangeRate{" +
-                "no='" + no + '\'' +
-                ", effectiveDate='" + effectiveDate + '\'' +
-                ", mid=" + mid +
-                '}';
+        return
+                "[" + effectiveDate +
+                ", średni kurs = " + mid +
+                ']';
     }
 }
