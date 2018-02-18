@@ -12,4 +12,12 @@ public class ExchangeRate {
     @SerializedName("mid")
     Double mid;
 
+    @Override
+    public String toString() {
+        return "ExchangeRate{" +
+                "no='" + no + '\'' +
+                ", effectiveDate='" + effectiveDate + '\'' +
+                ", mid=" + mid +
+                '}';
+    }
 }
