@@ -3,7 +3,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
-//from  w  ww  .  java  2  s  . c o m
 public class JsonReadFromURL {
     public static void main(String[] args) {
         System.out
