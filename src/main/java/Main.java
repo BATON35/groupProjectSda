@@ -13,7 +13,7 @@ public class Main {
 
     static String BASE_URL = "http://api.nbp.pl/";
     static String waluta;
-    static int iloscNotowan;
+    static int iloscNotowan = 2;
     static int nrWaluty;
     private static int range;
     static SimpleDateFormat fromDate = new SimpleDateFormat("yyyy-mm-dd");
@@ -23,18 +23,18 @@ public class Main {
 
 
     public static void main(String[] args) throws ParseException {
-        User os1 = new User("lukas","abcd");
-        if (Login.isVaildLogin(os1) == false){
+        User os1 = new User("lukas", "abcd");
+        if (Login.isVaildLogin(os1) == false) {
             System.out.println("błędne dane");
             return;
-        }else {
-        AddUsers.addUser(os1);
-        getFromDate();
-        getToDate();
-        stringToSimpeDateFormat();
-        getCurrency();
+        } else {
+            AddUsers.addUser(os1);
+            getFromDate();
+            getToDate();
+            stringToSimpeDateFormat();
+            getCurrency();
         }
-      //  getRange();
+        //  getRange();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -44,10 +44,16 @@ public class Main {
         NbpApi nbpApi = retrofit.create(NbpApi.class);
 
         Call<Data> exchangeRateCall = nbpApi.getLastData(waluta, iloscNotowan);
-     //   System.out.println("URL: " + exchangeRateCall.request().url());
+        //   System.out.println("URL: " + exchangeRateCall.request().url());
         Call<Data> exchangeRateByDateCall = nbpApi.getRangeDate(waluta, fromDateString, toDateString);
         System.out.println("URL: " + exchangeRateByDateCall.request().url());
 
+        display(exchangeRateByDateCall);
+        display(exchangeRateCall);
+
+    }
+
+    private static void display(Call<Data> exchangeRateByDateCall) {
         exchangeRateByDateCall.enqueue(new Callback<Data>() {
             public void onResponse(Call<Data> call, Response<Data> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -64,23 +70,6 @@ public class Main {
                 throwable.printStackTrace();
             }
         });
-        exchangeRateCall.enqueue(new Callback<Data>() {
-            public void onResponse(Call<Data> call, Response<Data> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Data data = response.body();
-
-                    System.out.println("CODE:  " + data.code);
-                    for (ExchangeRate er : data.rates) {
-                        System.out.println(er.toString());
-                    }
-                }
-            }
-
-            public void onFailure(Call<Data> call, Throwable throwable) {
-                throwable.printStackTrace();
-            }
-        });
-
     }
 
     private static String getToDate() {
