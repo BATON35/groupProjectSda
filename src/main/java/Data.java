@@ -1,5 +1,6 @@
 import com.google.gson.annotations.SerializedName;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class Data {
@@ -15,4 +16,10 @@ public class Data {
 
     @SerializedName("rates")
     List<ExchangeRate> rates;
+
+    @SerializedName("fromDate")
+    SimpleDateFormat fromDate;
+
+    @SerializedName("toDate")
+    SimpleDateFormat toDate;
 }
