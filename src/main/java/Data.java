@@ -16,10 +16,4 @@ public class Data {
 
     @SerializedName("rates")
     List<ExchangeRate> rates;
-
-    @SerializedName("fromDate")
-    SimpleDateFormat fromDate;
-
-    @SerializedName("toDate")
-    SimpleDateFormat toDate;
 }
