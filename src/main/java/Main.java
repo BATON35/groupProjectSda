@@ -24,12 +24,16 @@ public class Main {
 
     public static void main(String[] args) throws ParseException {
         User os1 = new User("lukas","abcd");
-        Login.isVaildLogin(os1);
+        if (Login.isVaildLogin(os1) == false){
+            System.out.println("błędne dane");
+            return;
+        }else {
         AddUsers.addUser(os1);
         getFromDate();
         getToDate();
         stringToSimpeDateFormat();
         getCurrency();
+        }
       //  getRange();
 
         Retrofit retrofit = new Retrofit.Builder()
